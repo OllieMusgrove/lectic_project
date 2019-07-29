@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+{% extends 'lectic/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Game
+{% endblock %}
+
+{% block body_block %}
+<div>
+    {% if questions %}
+    <ul>
+        {% for question in questions %}
+        <li>{{ question.question }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <strong>There are no questions present.</strong>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+{% extends 'lectic/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Home
+{% endblock %}
+
+{% block body_block %}
+<div>
+    <h1>Welcome to Lectic!</h1>
+    <h2>Making Lectures Tic</h2>
+</div>
+<div>
+    <form action="{% url 'quiz_selection' %}">
+        <input type="submit" value="Select Quiz" />
+    </form>
+</div>
+{% endblock %}
+
+</html>

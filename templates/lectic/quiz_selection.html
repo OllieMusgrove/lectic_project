@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+{% extends 'lectic/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Selection
+{% endblock %}
+
+{% block body_block %}
+<div>
+    {% if quizzes %}
+    <ul>
+        <div class="quiz-list">
+            {% for quiz in quizzes %}
+            <li><a href="/lectic/{{ quiz.slug }}">{{ quiz.name }}</a></li>
+            {% endfor %}
+        </div>
+    </ul>
+    {% else %}
+    <strong>There are no quizzes present.</strong>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+</html>

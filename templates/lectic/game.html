@@ -13,8 +13,20 @@ Game
     <ul>
         {% for question in questions %}
         <li>{{ question.question }}</li>
+        <form id="attempt_form" method="post" action="/lectic/{{ question.quiz.slug }}/game/"> {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+            {% endfor %}
+            {% for field in form.visible_fields %}
+            {{ field.errors }}
+            {{ field.help_text }}
+            {{ field }}
+            {% endfor %}
+            <input type="submit" name="submit" value="Submit" />
+        </form>
         {% endfor %}
     </ul>
+
     {% else %}
     <strong>There are no questions present.</strong>
     {% endif %}

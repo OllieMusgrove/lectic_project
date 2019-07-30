@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.db.models.signals import post_save
+import uuid
 
 import os
 
@@ -39,4 +40,20 @@ class Question(models.Model):
         return self.question
 
 
+class QuestionAttempt(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    question = models.ForeignKey(Question)
+    attempt = models.CharField(max_length=100, unique=False)
+    result = models.BooleanField()
 
+    def save(self, *args, **kwargs):
+        if self.question.answer == self.attempt:
+            self.result = True
+            print ('Correct Answer!')
+        else:
+            self.result = False
+            print ('Wrong Answer!')
+        super(QuestionAttempt, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.id

@@ -1,6 +1,7 @@
 from django import forms
 from lectic.models import Question
 from lectic.models import Quiz
+from lectic.models import QuestionAttempt
 
 class QuestionForm(forms.ModelForm):
     question = forms.CharField(max_length=1000, help_text="Please enter a question")
@@ -18,3 +19,10 @@ class QuizForm(forms.ModelForm):
         model = Quiz
         fields = ('name',)
 
+
+class QuestionAttemptForm(forms.ModelForm):
+    attempt = forms.CharField(max_length=100, help_text="Please enter the answer")
+
+    class Meta:
+        model = QuestionAttempt
+        fields = ('attempt',)

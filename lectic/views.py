@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from datetime import datetime
 from lectic.models import Question, Quiz, QuestionAttempt
 from lectic.forms import QuestionForm, QuizForm, QuestionAttemptForm
+from decimal import Decimal
 
 def index(request):
     return render(request, 'lectic/index.html', {})
@@ -15,30 +17,37 @@ def quiz_selection(request):
 
 
 def game(request, quiz_name_slug):
-    
     question_list = None
     try:
         quiz = Quiz.objects.get(slug=quiz_name_slug)
         question_list = Question.objects.filter(quiz=quiz)
         question_select = Question.objects.filter(quiz=quiz).order_by('question')[0]
         print(question_list)
-        print(question_select)
-        
+        print(question_select)  
     except Quiz.DoesNotExist:
         question_list = None
 
-    form = QuestionAttemptForm()
+    # form = QuestionAttemptForm()
+    # if request.method == 'POST':
+    #     form = QuestionAttemptForm(request.POST)
+    #     if form.is_valid():
+    #         question_attempt = form.save(commit=False)
+    #         question_attempt.question = question_select
+    #         question_attempt.save()
+    #     else:
+    #         print(form.errors)
+
     if request.method == 'POST':
-        form = QuestionAttemptForm(request.POST)
+        attempt = request.POST.get('attempt', '')
+        elapsed_time = request.POST.get('time', '')
+        question_attempt = QuestionAttempt()
+        question_attempt.question = question_select
+        question_attempt.attempt = attempt
+        question_attempt.time = Decimal(elapsed_time)
 
-        if form.is_valid():
-            question_attempt = form.save(commit=False)
-            question_attempt.question = question_select
-            question_attempt.save()     
-        else:
-            print(form.errors) 
+        question_attempt.save()
 
-    context_dict = {'questions': question_list, 'question_select': question_select, 'form': form}  
+    context_dict = {'questions': question_list, 'question_select': question_select}  
     return render(request, 'lectic/game.html', context_dict)
 
 

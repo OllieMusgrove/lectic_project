@@ -10,7 +10,7 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = ('question', 'answer','quiz')
 
 class QuestionAttemptAdmin(admin.ModelAdmin):
-    list_display = ('id', 'question','attempt','result')
+    list_display = ('id', 'question','attempt','result','time')
 
 # Register your models here.
 admin.site.register(Quiz, QuizAdmin)

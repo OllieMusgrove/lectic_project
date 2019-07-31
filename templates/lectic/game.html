@@ -7,31 +7,54 @@
 Game
 {% endblock %}
 
+
+
 {% block body_block %}
+{% if question_select %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script type="text/javascript">
+    var csrf_token = '{{ csrf_token }}';
+    var quiz_slug = '{{ question_select.quiz.slug }}';
+    console.log(quiz_slug);
+    $(document).ready(function () {
+        var start = new Date();
+        console.log("time = " + start);
+        $('#attempt_form').on('submit', function (event) {
+            event.preventDefault();
+            var end = new Date();
+            var difference = (end - start) / 1000;
+            console.log("time = " + difference + " seconds");
+            alert("Elasped time = " + difference + " seconds");
+            start = new Date();
+            $.ajax({
+                type: "POST",
+                url: "/lectic/{{ question_select.quiz.slug }}/game/",
+                data: {
+                    'csrfmiddlewaretoken': $('#attempt_form input[name=csrfmiddlewaretoken]').val(),
+                    'attempt': $('#attempt_text').val(),
+                    'time': difference,
+                },
+                success: function (data) {
+                    location.reload();
+                },
+                dataType: 'html'
+            });
+        });
+    });
+    console.log(quiz_slug)
+    document.getElementById('attempt_form').action = "/lectic/{{ question_select.quiz.slug }}/game/";
+</script>
 <div>
-    {% if questions %}
-    <ul>
-        {% for question in questions %}
-        <li>{{ question.question }}</li>
-        <form id="attempt_form" method="post" action="/lectic/{{ question.quiz.slug }}/game/"> {% csrf_token %}
-            {% for hidden in form.hidden_fields %}
-            {{ hidden }}
-            {% endfor %}
-            {% for field in form.visible_fields %}
-            {{ field.errors }}
-            {{ field.help_text }}
-            {{ field }}
-            {% endfor %}
-            <input type="submit" name="submit" value="Submit" />
-        </form>
-        {% endfor %}
-    </ul>
-
-    {% else %}
-    <strong>There are no questions present.</strong>
-    {% endif %}
+    <p>{{ question_select.question }}</p>
+    <form id="attempt_form" method="post" action=""> {% csrf_token %}
+        <textarea id="attempt_text" name="attempt_text" form="attempt_text" class="textArea"
+            placeholder="Answer"></textarea>
+        <input type="submit" name="submit" value="Submit" />
+    </form>
 </div>
-
+{% else %}
+<strong>There are no questions present.</strong>
+{% endif %}
 {% endblock %}
 
 </html>

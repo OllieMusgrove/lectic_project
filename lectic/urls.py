@@ -6,5 +6,5 @@ urlpatterns = [
     url(r'^quiz_selection/$', views.quiz_selection, name='quiz_selection'),
     url(r'^add_quiz/$', views.add_quiz, name='add_quiz'),
     url(r'^(?P<quiz_name_slug>[\w\-]+)/add_question/$', views.add_question, name='add_question'),
-    url(r'^(?P<quiz_name_slug>[\w\-]+)/game/$', views.game, name='game'),
+    url(r'^(?P<quiz_name_slug>[\w\-]+)/game/(?P<question_number>[0-9]{1})/$', views.game, name='game'),
 ]

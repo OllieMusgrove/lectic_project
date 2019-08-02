@@ -15,7 +15,9 @@ Game
 <script type="text/javascript">
     var csrf_token = '{{ csrf_token }}';
     var quiz_slug = '{{ question_select.quiz.slug }}';
+    var quest_num = '{{ question_number }}';
     console.log(quiz_slug);
+    console.log(quest_num);
     $(document).ready(function () {
         var start = new Date();
         console.log("time = " + start);
@@ -28,21 +30,25 @@ Game
             start = new Date();
             $.ajax({
                 type: "POST",
-                url: "/lectic/{{ question_select.quiz.slug }}/game/",
+                url: "/lectic/{{ question_select.quiz.slug }}/game/" + quest_num + "/",
                 data: {
                     'csrfmiddlewaretoken': $('#attempt_form input[name=csrfmiddlewaretoken]').val(),
                     'attempt': $('#attempt_text').val(),
                     'time': difference,
                 },
                 success: function (data) {
-                    location.reload();
+                    //location.reload();
+                    var new_num = parseInt(quest_num) + 1
+                    console.log(new_num)
+                    location.href = "/lectic/{{ question_select.quiz.slug }}/game/" + new_num + "/";
                 },
                 dataType: 'html'
             });
         });
     });
-    console.log(quiz_slug)
-    document.getElementById('attempt_form').action = "/lectic/{{ question_select.quiz.slug }}/game/";
+    // quest_num++
+    console.log(quest_num)
+    document.getElementById('attempt_form').action = "/lectic/{{ question_select.quiz.slug }}/game/" + quest_num + "/";
 </script>
 <div>
     <p>{{ question_select.question }}</p>

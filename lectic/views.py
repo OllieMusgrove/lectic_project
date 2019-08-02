@@ -16,26 +16,18 @@ def quiz_selection(request):
     return render(request, 'lectic/quiz_selection.html', context_dict)
 
 
-def game(request, quiz_name_slug):
+def game(request, quiz_name_slug, question_number):
+    
+    quest_num = int (question_number)
     question_list = None
     try:
         quiz = Quiz.objects.get(slug=quiz_name_slug)
         question_list = Question.objects.filter(quiz=quiz)
-        question_select = Question.objects.filter(quiz=quiz).order_by('question')[0]
+        question_select = Question.objects.filter(quiz=quiz).order_by('question')[quest_num]
         print(question_list)
         print(question_select)  
     except Quiz.DoesNotExist:
         question_list = None
-
-    # form = QuestionAttemptForm()
-    # if request.method == 'POST':
-    #     form = QuestionAttemptForm(request.POST)
-    #     if form.is_valid():
-    #         question_attempt = form.save(commit=False)
-    #         question_attempt.question = question_select
-    #         question_attempt.save()
-    #     else:
-    #         print(form.errors)
 
     if request.method == 'POST':
         attempt = request.POST.get('attempt', '')
@@ -44,10 +36,12 @@ def game(request, quiz_name_slug):
         question_attempt.question = question_select
         question_attempt.attempt = attempt
         question_attempt.time = Decimal(elapsed_time)
-
         question_attempt.save()
+        # quest_num = quest_num + 1
+        # question_number = str (quest_num)
+        # print (question_number)
 
-    context_dict = {'questions': question_list, 'question_select': question_select}  
+    context_dict = {'questions': question_list, 'question_select': question_select, 'question_number': quest_num}
     return render(request, 'lectic/game.html', context_dict)
 
 

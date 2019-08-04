@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from datetime import datetime
-from lectic.models import Question, Quiz, QuestionAttempt
+from lectic.models import Question, Quiz, QuestionAttempt, QuizAttempt
 from lectic.forms import QuestionForm, QuizForm, QuestionAttemptForm
 from decimal import Decimal
 
@@ -16,9 +16,30 @@ def quiz_selection(request):
     return render(request, 'lectic/quiz_selection.html', context_dict)
 
 
-def game(request, quiz_name_slug, question_number):
+def game(request, quiz_name_slug, question_number, quiz_attempt_no):
     
+    quiz_attempt_int = int (quiz_attempt_no)
+
+    quiz_attempt = QuizAttempt()
+    if quiz_attempt_int == 0000000:
+        # if request.method == 'POST':
+            quiz_attempt = QuizAttempt()
+            next_quizattempt = QuizAttempt.objects.latest('created_datetime')
+            quiz_attempt.auto_id = next_quizattempt.auto_id + 1
+            quiz_attempt_int = quiz_attempt.auto_id
+            quiz_attempt.save()
+        # else:
+        #     quiz_attempt = QuizAttempt.objects.get(auto_id=quiz_attempt_int)
+    else:
+        quiz_attempt = QuizAttempt.objects.get(auto_id=quiz_attempt_int)
+        quiz_attempt_int = quiz_attempt.auto_id
+    
+    quiz_attempt_no = str (quiz_attempt_int)
+    
+    
+
     quest_num = int (question_number)
+
     question_list = None
     try:
         quiz = Quiz.objects.get(slug=quiz_name_slug)
@@ -36,12 +57,10 @@ def game(request, quiz_name_slug, question_number):
         question_attempt.question = question_select
         question_attempt.attempt = attempt
         question_attempt.time = Decimal(elapsed_time)
+        question_attempt.quiz_attempt = quiz_attempt
         question_attempt.save()
-        # quest_num = quest_num + 1
-        # question_number = str (quest_num)
-        # print (question_number)
 
-    context_dict = {'questions': question_list, 'question_select': question_select, 'question_number': quest_num}
+    context_dict = {'questions': question_list, 'question_select': question_select,'question_number': quest_num, 'quiz_attempt' : quiz_attempt, 'init_quiz' : quiz_attempt_no}
     return render(request, 'lectic/game.html', context_dict)
 
 

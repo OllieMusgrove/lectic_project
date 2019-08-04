@@ -16,8 +16,15 @@ Game
     var csrf_token = '{{ csrf_token }}';
     var quiz_slug = '{{ question_select.quiz.slug }}';
     var quest_num = '{{ question_number }}';
+    var quest_count = '{{ questions.count }}';
+    var init_quiz_no = '{{ init_quiz }}';
+    var new_quiz = '{{ quiz_attempt.auto_id }}'
+    var quest_total = parseInt(quest_count)
     console.log(quiz_slug);
     console.log(quest_num);
+    console.log(quest_total);
+    console.log(init_quiz_no);
+    console.log(new_quiz)
     $(document).ready(function () {
         var start = new Date();
         console.log("time = " + start);
@@ -26,29 +33,35 @@ Game
             var end = new Date();
             var difference = (end - start) / 1000;
             console.log("time = " + difference + " seconds");
-            alert("Elasped time = " + difference + " seconds");
+            var question_ans = '{{ question_select.answer }}';
+            console.log(question_ans)
+            alert("Elasped time = " + difference + " seconds \n Correct Answer = " + question_ans);
             start = new Date();
             $.ajax({
                 type: "POST",
-                url: "/lectic/{{ question_select.quiz.slug }}/game/" + quest_num + "/",
+                url: "/lectic/{{ question_select.quiz.slug }}/game/" + quest_num + "/{{ init_quiz }}/",
                 data: {
                     'csrfmiddlewaretoken': $('#attempt_form input[name=csrfmiddlewaretoken]').val(),
                     'attempt': $('#attempt_text').val(),
                     'time': difference,
                 },
                 success: function (data) {
-                    //location.reload();
                     var new_num = parseInt(quest_num) + 1
                     console.log(new_num)
-                    location.href = "/lectic/{{ question_select.quiz.slug }}/game/" + new_num + "/";
+                    if (quest_total > new_num) {
+                        alert("Destination id = {{ quiz_attempt.auto_id }}")
+                        location.href = "/lectic/{{ question_select.quiz.slug }}/game/" + new_num + "/{{ quiz_attempt.auto_id }}/";
+                    }
+                    else {
+                        location.href = "/lectic/quiz_selection/"
+                    }
                 },
                 dataType: 'html'
             });
         });
     });
-    // quest_num++
-    console.log(quest_num)
-    document.getElementById('attempt_form').action = "/lectic/{{ question_select.quiz.slug }}/game/" + quest_num + "/";
+    console.log(init_quiz_no)
+    document.getElementById('attempt_form').action = "/lectic/{{ question_select.quiz.slug }}/game/" + quest_num + "/{{ init_quiz }}/";
 </script>
 <div>
     <p>{{ question_select.question }}</p>

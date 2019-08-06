@@ -48,9 +48,13 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
         question_list = Question.objects.filter(quiz=quiz)
         question_select = Question.objects.filter(quiz=quiz).order_by('question')[quest_num]
         print(question_list)
-        print(question_select)  
+        print(question_select)
+        quiz_attempt.qes_possible = len(question_list)
+        print(quiz_attempt.qes_possible)
+        quiz_attempt.save()
     except Quiz.DoesNotExist:
         question_list = None
+        quiz_attempt.qes_possible = 0
 
     if request.method == 'POST':
         attempt = request.POST.get('attempt', '')
@@ -63,6 +67,11 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
         question_attempt.save()
         print(question_attempt.performance)
         quiz_attempt.performance = quiz_attempt.performance + question_attempt.performance
+        if question_attempt.result == True:
+            quiz_attempt.accumulated_score = quiz_attempt.accumulated_score + 1
+        else:
+            quiz_attempt.accumulated_score = quiz_attempt.accumulated_score + 0
+        quiz_attempt.qes_complete = quiz_attempt.qes_complete + 1
         quiz_attempt.save()
         print(quiz_attempt.performance)
 

@@ -45,13 +45,32 @@ class QuizAttempt(models.Model):
     auto_id = models.IntegerField(default=3000000)
     created_datetime = models.DateTimeField(default=datetime.datetime.now)
     performance = models.DecimalField(decimal_places = 3, max_digits = 10, default=0.000, editable=True)
-    
-    # quiz = models.ForeignKey(Quiz)
-    # accumulated_time = models.DecimalField(decimal_places = 3, max_digits = 6, default=0.000)
-    # accumulated_score = models.IntegerField(default=0)
+    accumulated_score = models.IntegerField(default=0)
+    qes_possible = models.IntegerField(default=0)
+    qes_complete = models.IntegerField(default=0)
+    finished = models.BooleanField(default=False)
+    all_correct = models.BooleanField(default=False)
+    merit = models.BooleanField(default=False)
+    distinction = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        
+        if self.qes_possible == self.qes_complete:
+            self.finished = True
+            if self.accumulated_score == self.qes_possible:
+                self.all_correct = True
+                if self.performance <= (self.qes_possible*5):
+                    self.distinction = True
+                    self.merit = True
+                elif self.performance <= (self.qes_possible*10):
+                    self.merit = True
+                    self.distinction = False
+                else:
+                    self.distinction = False
+                    self.merit = False
+            else:
+                self.all_correct = False
+        else:
+            self.finished = False
         super(QuizAttempt, self).save(*args, **kwargs)
 
     def __int__(self):

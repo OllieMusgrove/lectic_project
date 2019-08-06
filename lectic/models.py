@@ -44,17 +44,14 @@ class QuizAttempt(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     auto_id = models.IntegerField(default=3000000)
     created_datetime = models.DateTimeField(default=datetime.datetime.now)
+    performance = models.DecimalField(decimal_places = 3, max_digits = 10, default=0.000, editable=True)
     
     # quiz = models.ForeignKey(Quiz)
     # accumulated_time = models.DecimalField(decimal_places = 3, max_digits = 6, default=0.000)
     # accumulated_score = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
-        # try:
-        #     self.auto_id = QuizAttempt.objects.latest('auto_id').auto_id + 1
-        #     print (self.auto_id)
-        # except:
-        #     QuizAttempt.objects.count = 0
+        
         super(QuizAttempt, self).save(*args, **kwargs)
 
     def __int__(self):
@@ -69,13 +66,16 @@ class QuestionAttempt(models.Model):
     time = models.DecimalField(decimal_places = 3, max_digits = 6, default=0.000)
     result = models.BooleanField()
     quiz_attempt = models.ForeignKey(QuizAttempt)
+    performance = models.DecimalField(decimal_places = 3, max_digits = 10, default=0.000)
 
     def save(self, *args, **kwargs):
         if self.question.answer == self.attempt:
             self.result = True
+            self.performance = self.time
             print ('Correct Answer!')
         else:
             self.result = False
+            self.performance = self.time + 10
             print ('Wrong Answer!')
         super(QuestionAttempt, self).save(*args, **kwargs)
 

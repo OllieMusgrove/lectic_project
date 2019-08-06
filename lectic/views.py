@@ -22,22 +22,24 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
 
     quiz_attempt = QuizAttempt()
     if quiz_attempt_int == 0000000:
-        # if request.method == 'POST':
-            quiz_attempt = QuizAttempt()
+        quiz_attempt = QuizAttempt()
+        try:
             next_quizattempt = QuizAttempt.objects.latest('created_datetime')
             quiz_attempt.auto_id = next_quizattempt.auto_id + 1
             quiz_attempt_int = quiz_attempt.auto_id
             quiz_attempt.save()
-        # else:
-        #     quiz_attempt = QuizAttempt.objects.get(auto_id=quiz_attempt_int)
+        except QuizAttempt.DoesNotExist:
+            quiz_attempt.auto_id = 1000000
+            quiz_attempt.save()
     else:
         quiz_attempt = QuizAttempt.objects.get(auto_id=quiz_attempt_int)
         quiz_attempt_int = quiz_attempt.auto_id
     
-    quiz_attempt_no = str (quiz_attempt_int)
+    if quiz_attempt_int == 0000000:
+        quiz_attempt_no = "0000000"
+    else:
+        quiz_attempt_no = str (quiz_attempt_int)
     
-    
-
     quest_num = int (question_number)
 
     question_list = None
@@ -59,6 +61,10 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
         question_attempt.time = Decimal(elapsed_time)
         question_attempt.quiz_attempt = quiz_attempt
         question_attempt.save()
+        print(question_attempt.performance)
+        quiz_attempt.performance = quiz_attempt.performance + question_attempt.performance
+        quiz_attempt.save()
+        print(quiz_attempt.performance)
 
     context_dict = {'questions': question_list, 'question_select': question_select,'question_number': quest_num, 'quiz_attempt' : quiz_attempt, 'init_quiz' : quiz_attempt_no}
     return render(request, 'lectic/game.html', context_dict)

@@ -11,11 +11,11 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = ('question', 'answer','quiz')
 
 class QuestionAttemptAdmin(admin.ModelAdmin):    
-    list_display = ('time_stamp', 'id', 'question','attempt','result','time','quiz_attempt')
+    list_display = ('time_stamp', 'question','attempt','result','time','quiz_attempt','performance')
     ordering = ('-time_stamp',)
 
 class QuizAttemptAdmin(admin.ModelAdmin):    
-    list_display = ('created_datetime', 'auto_id')
+    list_display = ('created_datetime', 'auto_id', 'performance')
     ordering = ('-created_datetime',)
 
 # Register your models here.

@@ -16,7 +16,7 @@ class QuestionAttemptAdmin(admin.ModelAdmin):
     ordering = ('-time_stamp',)
 
 class QuizAttemptAdmin(admin.ModelAdmin):    
-    list_display = ('created_datetime', 'auto_id', 'performance','accumulated_score', 'qes_possible','qes_complete','finished','all_correct','merit','distinction')
+    list_display = ('user','quiz','created_datetime', 'auto_id', 'performance','accumulated_score', 'qes_possible','qes_complete','finished','all_correct','merit','distinction')
     ordering = ('-created_datetime',)
 
 # Register your models here.

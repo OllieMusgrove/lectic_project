@@ -35,7 +35,7 @@ Game
             console.log("time = " + difference + " seconds");
             var question_ans = '{{ question_select.answer }}';
             console.log(question_ans)
-            alert("Elasped time = " + difference + " seconds \n Correct Answer = " + question_ans);
+            // alert("Elasped time = " + difference + " seconds \n Correct Answer = " + question_ans);
             start = new Date();
             $.ajax({
                 type: "POST",
@@ -49,7 +49,7 @@ Game
                     var new_num = parseInt(quest_num) + 1
                     console.log(new_num)
                     if (quest_total > new_num) {
-                        alert("Destination id = {{ quiz_attempt.auto_id }}")
+                        // alert("Destination id = {{ quiz_attempt.auto_id }}")
                         location.href = "/lectic/{{ question_select.quiz.slug }}/game/" + new_num + "/{{ quiz_attempt.auto_id }}/";
                     }
                     else {

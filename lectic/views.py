@@ -87,6 +87,8 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
     quiz_attempt = QuizAttempt()
     if quiz_attempt_int == 0000000:
         quiz_attempt = QuizAttempt()
+        quiz_attempt.user = request.user
+        quiz_attempt.quiz = Quiz.objects.get(slug=quiz_name_slug)
         try:
             next_quizattempt = QuizAttempt.objects.latest('created_datetime')
             quiz_attempt.auto_id = next_quizattempt.auto_id + 1
@@ -94,6 +96,7 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
             quiz_attempt.save()
         except QuizAttempt.DoesNotExist:
             quiz_attempt.auto_id = 1000000
+            quiz_attempt_int = quiz_attempt.auto_id
             quiz_attempt.save()
     else:
         quiz_attempt = QuizAttempt.objects.get(auto_id=quiz_attempt_int)
@@ -186,3 +189,18 @@ def add_question(request, quiz_name_slug):
 
     context_dict = {'quiz': quiz_select, 'form': form}    
     return render(request, 'lectic/add_question.html', context_dict)
+
+def leaderboard(request, quiz_name_slug):
+    try:
+        quiz_select = Quiz.objects.get(slug=quiz_name_slug)
+    except Quiz.DoesNotExist:
+        quiz_select = None
+
+    try:
+        all_qz_attempts = QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('performance')
+        print(all_qz_attempts)
+    except QuizAttempt.DoesNotExist:
+        all_qz_attempts = None
+
+    context_dict = {'quiz_attempts' : all_qz_attempts}    
+    return render(request, 'lectic/leaderboard.html', context_dict)

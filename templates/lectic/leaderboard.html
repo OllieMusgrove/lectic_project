@@ -1,0 +1,34 @@
+{% extends 'lectic/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Leaderboard
+{% endblock %}
+
+{% block links_block %}
+<link rel="stylesheet" type="text/css" href="/static/CSS/leaderboard.css">
+{% endblock %}
+
+{% block body_block %}
+<div>
+    {% if quiz_attempts %}
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Performance</th>
+        </tr>
+        {% for quiz_attempt in quiz_attempts %}
+        <tr>
+            <td>{{ quiz_attempt.user }}</td>
+            <td>{{ quiz_attempt.accumulated_score }}</td>
+            <td>{{ quiz_attempt.performance }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <strong>No attempts taken for this quiz yet</strong>
+    {% endif %}
+</div>
+
+{% endblock %}

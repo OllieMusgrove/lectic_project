@@ -14,7 +14,8 @@ Add Quiz
     <ul>
         <div class="quiz-list">
             {% for quiz in quizzes %}
-            <li><a href="/lectic/{{ quiz.slug }}/add_question">{{ quiz.name }}</a></li>
+            <li>{{ quiz.name }} <a href="/lectic/{{ quiz.slug }}/add_question/">Add Question</a>
+                <a href="/lectic/{{ quiz.slug }}/leaderboard/">Leaderboard</a></li>
             {% endfor %}
         </div>
     </ul>

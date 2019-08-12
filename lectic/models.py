@@ -68,6 +68,8 @@ class QuizAttempt(models.Model):
     all_correct = models.BooleanField(default=False)
     merit = models.BooleanField(default=False)
     distinction = models.BooleanField(default=False)
+    user = models.ForeignKey(User)
+    quiz = models.ForeignKey(Quiz)
 
     def save(self, *args, **kwargs):
         if self.qes_possible == self.qes_complete:

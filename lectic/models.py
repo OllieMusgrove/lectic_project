@@ -4,9 +4,25 @@ from django.db.models.signals import post_save
 import datetime
 import uuid
 
+from django.contrib.auth.models import User
+
 import os
 
 # Create your models here.
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    is_lecturer = models.BooleanField(default='False')
+    matric_number = models.CharField(max_length=8, unique=False)
+
+    def save(self, *args, **kwargs):
+        if (self.matric_number == "LECTURER"):
+            self.is_lecturer = True
+        else:
+            self.is_lecturer = False
+        super(UserProfile, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.user.username
 
 class Quiz(models.Model):
     name = models.CharField(max_length=100, unique=False)

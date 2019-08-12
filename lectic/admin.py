@@ -3,6 +3,7 @@ from lectic.models import Question
 from lectic.models import Quiz
 from lectic.models import QuestionAttempt
 from lectic.models import QuizAttempt
+from lectic.models import UserProfile
 
 class QuizAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -23,3 +24,4 @@ admin.site.register(Quiz, QuizAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(QuestionAttempt, QuestionAttemptAdmin)
 admin.site.register(QuizAttempt, QuizAttemptAdmin)
+admin.site.register(UserProfile)

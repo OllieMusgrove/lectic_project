@@ -9,13 +9,23 @@ Home
 
 {% block body_block %}
 <div>
+    {% if user.is_authenticated %}
+    <h1>Welcome to Lectic {{ user.username }}!</h1>
+    {% else %}
     <h1>Welcome to Lectic!</h1>
+    {% endif %}
     <h2>Making Lectures Tic</h2>
 </div>
 <div>
     <form action="{% url 'quiz_selection' %}">
         <input type="submit" value="Select Quiz" />
     </form>
+    {% if perm == True %}
+    <form action="{% url 'add_quiz' %}">
+        <input type="submit" value="Quiz Admin" />
+    </form>
+    {% else %}
+    {% endif %}
 </div>
 {% endblock %}
 

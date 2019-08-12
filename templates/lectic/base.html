@@ -24,8 +24,21 @@
     <hr />
     <div>
         <ul>
-            <li><a href="{% url 'index' %}">Index</a></li>
+            {% if user.is_authenticated %}
+            <li>Lecturer? {{ user.user_profile }}</li>
+            {% if user.user_profile.is_lecturer %}
             <li><a href="{% url 'add_quiz' %}">Quiz Admin</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="{% url 'quiz_selection' %}">View Games</a></li>
+            {% else %}
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="{% url 'quiz_selection' %}">View Games</a></li>
+            {% endif %}
+            {% else %}
+            <li><a href="{% url 'login' %}">Sign In</a></li>
+            <li><a href="{% url 'register' %}">Sign Up</a></li>
+            {% endif %}
+            <li><a href="{% url 'index' %}">Index</a></li>
         </ul>
     </div>
 </body>

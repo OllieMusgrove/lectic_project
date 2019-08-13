@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from datetime import datetime
-from lectic.models import Question, Quiz, QuestionAttempt, QuizAttempt, UserProfile
+from lectic.models import Question, Quiz, QuestionAttempt, QuizAttempt, UserProfile, User
 from lectic.forms import QuestionForm, QuizForm, QuestionAttemptForm, UserForm, UserProfileForm
 from decimal import Decimal
 from django.contrib.auth import authenticate, login, logout
@@ -197,10 +197,21 @@ def leaderboard(request, quiz_name_slug):
         quiz_select = None
 
     try:
-        all_qz_attempts = QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('performance')
-        print(all_qz_attempts)
+        all_qz_attempts = QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select)
+        print (all_qz_attempts.count())
+        if (all_qz_attempts.count() != 0):
+            all_qz_attempts = QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('-performance')
+            uu1 = UserProfile.objects.filter(is_lecturer=False).values('user').distinct()
+            item_list = [all_qz_attempts.filter(user=item['user']).last() for item in UserProfile.objects.filter(is_lecturer=False).values('user').distinct()]
+            ordered_il = sorted(item_list, key=lambda x: x.performance, reverse=False)
+            print(all_qz_attempts)
+            print(uu1)
+            print(item_list)
+            print(ordered_il)
+        else:
+            ordered_il = None
     except QuizAttempt.DoesNotExist:
-        all_qz_attempts = None
+        ordered_il = None
 
-    context_dict = {'quiz_attempts' : all_qz_attempts}    
+    context_dict = {'quiz_attempts' : ordered_il}    
     return render(request, 'lectic/leaderboard.html', context_dict)

@@ -17,12 +17,20 @@ Leaderboard
             <th>Name</th>
             <th>Score</th>
             <th>Performance</th>
+            <th>Passed</th>
+            <th>Merit</th>
+            <th>Distinction</th>
+            <th>Submitted</th>
         </tr>
         {% for quiz_attempt in quiz_attempts %}
         <tr>
             <td>{{ quiz_attempt.user }}</td>
             <td>{{ quiz_attempt.accumulated_score }}</td>
             <td>{{ quiz_attempt.performance }}</td>
+            <td>{% if quiz_attempt.all_correct == True %}&#10004;{% else %}&times;{% endif %}</td>
+            <td>{% if quiz_attempt.merit == True %}&#10004;{% else %}&times;{% endif %}</td>
+            <td>{% if quiz_attempt.distinction == True %}&#10004;{% else %}&times;{% endif %}</td>
+            <td>{{ quiz_attempt.created_datetime }}</td>
         </tr>
         {% endfor %}
     </table>

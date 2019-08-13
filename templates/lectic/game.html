@@ -5,6 +5,7 @@
 
 {% block title_block %}
 Game
+
 {% endblock %}
 
 
@@ -68,6 +69,7 @@ Game
     <form id="attempt_form" method="post" action=""> {% csrf_token %}
         <textarea id="attempt_text" name="attempt_text" form="attempt_text" class="textArea"
             placeholder="Answer"></textarea>
+        </br>
         <input type="submit" name="submit" value="Submit" />
     </form>
 </div>

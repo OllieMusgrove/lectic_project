@@ -29,7 +29,6 @@
     <div>
         <ul>
             {% if user.is_authenticated %}
-            <li>Lecturer? {{ user.user_profile }}</li>
             {% if user.user_profile.is_lecturer %}
             <li><a href="{% url 'add_quiz' %}">Quiz Admin</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>

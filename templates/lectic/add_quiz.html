@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-{% extends 'lectic/base.html' %}
+{% extends 'lectic/base_bootstrap.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -11,14 +11,17 @@ Add Quiz
 {% block body_block %}
 <div>
     {% if quizzes %}
-    <ul>
-        <div class="quiz-list">
-            {% for quiz in quizzes %}
-            <li>{{ quiz.name }} <a href="/lectic/{{ quiz.slug }}/add_question/">Add Question</a>
-                <a href="/lectic/{{ quiz.slug }}/leaderboard/">Leaderboard</a></li>
-            {% endfor %}
+    <div class="text-left">
+        {% for quiz in quizzes %}
+        <div class="text-left">
+            <a href="#" class="btn btn-secondary-outlined disabled" role="button"
+                aria-disabled="true">{{ quiz.name }}</a>
+            <a class="btn btn-primary" href="/lectic/{{ quiz.slug }}/add_question/" role="button">Add Question</a>
+            <a class="btn btn-warning" href="/lectic/{{ quiz.slug }}/leaderboard/" role="button">Leaderboard</a>
+            </br></br>
         </div>
-    </ul>
+        {% endfor %}
+    </div>
     {% else %}
     <strong>There are no quizzes present.</strong>
     {% endif %}

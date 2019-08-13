@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-{% extends 'lectic/base.html' %}
+{% extends 'lectic/base_bootstrap.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -10,13 +10,12 @@ Selection
 {% block body_block %}
 <div>
     {% if quizzes %}
-    <ul>
-        <div class="quiz-list">
-            {% for quiz in quizzes %}
-            <li><a href="/lectic/{{ quiz.slug }}/game/0/0000000/">{{ quiz.name }}</a></li>
-            {% endfor %}
-        </div>
-    </ul>
+    <div class="text-centre">
+        {% for quiz in quizzes %}
+        <a class="btn btn-outline-primary btn-lg btn-block" href="/lectic/{{ quiz.slug }}/game/0/0000000/"
+            role="button">{{ quiz.name }}</a>
+        {% endfor %}
+    </div>
     {% else %}
     <strong>There are no quizzes present.</strong>
     {% endif %}

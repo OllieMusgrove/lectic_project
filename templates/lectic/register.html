@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-{% extends 'lectic/base.html' %}
+{% extends 'lectic/base_bootstrap.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -8,8 +8,8 @@ Register for Lectic!
 {% endblock %}
 
 {% block body_block %}
-<div>
-    <h1>Welcome to Lectic!</h1>
+<div class="jumbotron">
+    <h1>Register</h1>
 </div>
 <div>
     {% if registered %}
@@ -17,11 +17,14 @@ Register for Lectic!
     <a href="{% url 'index' %}">Return to Index</a>
     {% else %}
     <form id="user_form" method="post" action="{% url 'register' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ user_form.as_p }}
-        {{ profile_form.as_p }}
-        <input type="submit" name="submit" value="Register" />
+        <div class=text-left>
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+        </div>
+        <input type="submit" class="btn btn-outline-success btn-lg" name="submit" value="Register" />
     </form>
+    <br />
     {% endif %}
 </div>
 {% endblock %}

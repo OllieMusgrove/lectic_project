@@ -129,6 +129,8 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
         question_attempt = QuestionAttempt()
         question_attempt.question = question_select
         question_attempt.attempt = attempt
+        print("attempt =" + attempt)
+        print("elapsed time = " + elapsed_time)
         question_attempt.time = Decimal(elapsed_time)
         question_attempt.quiz_attempt = quiz_attempt
         question_attempt.save()

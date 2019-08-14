@@ -25,11 +25,16 @@ Game
 {% block body_block %}
 {% if question_select %}
 
-<div>
+<div class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow=""
+        aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%">
+    </div>
+</div>
+<div class="jumbotron">
     <p>{{ question_select.question }}</p>
     <form id="attempt_form" method="post" action=""> {% csrf_token %}
-        <textarea id="attempt_text" name="attempt_text" form="attempt_text" class="textArea"
-            placeholder="Answer"></textarea>
+        <textarea id="attempt_text" name="attempt_text" form="attempt_text" class="form-control" placeholder="Answer"
+            rows="1"></textarea>
         </br>
         <input type="submit" class="btn btn-outline-success" name="submit" value="Submit" />
     </form>

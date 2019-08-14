@@ -144,7 +144,10 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
         quiz_attempt.save()
         print(quiz_attempt.performance)
 
-    context_dict = {'questions': question_list, 'question_select': question_select,'question_number': quest_num, 'quiz_attempt' : quiz_attempt, 'init_quiz' : quiz_attempt_no}
+    qn_plus = quest_num + 1 #may need exception handling...
+    progress = int ((qn_plus/question_list.count())*100)
+
+    context_dict = {'progress': progress, 'questions': question_list, 'question_select': question_select,'question_number': quest_num, 'quiz_attempt' : quiz_attempt, 'init_quiz' : quiz_attempt_no}
     return render(request, 'lectic/game.html', context_dict)
 
 @login_required

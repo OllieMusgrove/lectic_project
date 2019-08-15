@@ -38,7 +38,7 @@ $(document).ready(function () {
                     location.href = "/lectic/" + quiz_slug + "/game/" + new_num + "/" + new_quiz + "/";
                 }
                 else {
-                    location.href = "/lectic/quiz_selection/"
+                    location.href = "/lectic/" + quiz_slug + "/quiz_end/" + new_quiz + "/";
                 }
             },
             dataType: 'html'

@@ -9,6 +9,20 @@ Add Quiz
 {% endblock %}
 
 {% block body_block %}
+<div class="jumbotron">
+    <h1>Add a Quiz</h1>
+    <form id="quiz_form" method="post" action="/lectic/add_quiz/"> {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+        {% endfor %}
+        {% for field in form.visible_fields %}
+        {{ field.errors }}
+        {{ field.help_text }}
+        {{ field }}
+        {% endfor %}
+        <input type="submit" class="btn btn-primary" name="submit" value="Create Quiz" />
+    </form>
+</div>
 <div>
     {% if quizzes %}
     <div class="text-left">
@@ -25,20 +39,6 @@ Add Quiz
     {% else %}
     <strong>There are no quizzes present.</strong>
     {% endif %}
-</div>
-<div class="jumbotron">
-    <h1>Add a Quiz</h1>
-    <form id="quiz_form" method="post" action="/lectic/add_quiz/"> {% csrf_token %}
-        {% for hidden in form.hidden_fields %}
-        {{ hidden }}
-        {% endfor %}
-        {% for field in form.visible_fields %}
-        {{ field.errors }}
-        {{ field.help_text }}
-        {{ field }}
-        {% endfor %}
-        <input type="submit" class="btn btn-primary" name="submit" value="Create Quiz" />
-    </form>
 </div>
 {% endblock %}
 

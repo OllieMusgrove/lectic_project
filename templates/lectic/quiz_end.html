@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+{% extends 'lectic/base_bootstrap.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Review
+{% endblock %}
+
+{% block body_block %}
+<div class="alert alert-info" role="alert">
+    <strong>Congratulations {{ user.username }}!</strong> You successfully completed the {{ quiz_slug }} quiz. <a
+        href="#" class="alert-link"></a>
+</div>
+<div>
+    <ul class="list-group">
+        <li class="list-group-item active justify-content-between">
+            Quiz Summary
+        </li>
+        <li class="list-group-item justify-content-between">
+            Score
+            <div class="text-right">
+                <span class="">{{ quiz_attempt.accumulated_score }}</span> /
+                <span class="">{{ quiz_attempt.qes_possible }}</span>
+            </div>
+
+        </li>
+        <li class="list-group-item justify-content-between">
+            Time taken
+            <span class="">{{ quiz_attempt.performance }} s</span>
+        </li>
+        <li class="list-group-item justify-content-between">
+            Passed
+            {% if quiz_attempt.all_correct == True %}
+            <span class="badge badge-success">&#10004;</span>
+            {% else %}
+            <span class="badge badge-danger">&times;</span>
+            {% endif %}
+        </li>
+        <li class="list-group-item justify-content-between">
+            Merit
+            {% if quiz_attempt.merit == True %}
+            <span class="badge badge-success">&#10004;</span>
+            {% else %}
+            <span class="badge badge-danger">&times;</span>
+            {% endif %}
+        </li>
+        <li class="list-group-item justify-content-between">
+            Distinction
+            {% if quiz_attempt.distinction == True %}
+            <span class="badge badge-success">&#10004;</span>
+            {% else %}
+            <span class="badge badge-danger">&times;</span>
+            {% endif %}
+        </li>
+    </ul>
+</div>
+<br />
+<div>
+    <a class="btn btn-outline-primary btn-block" href="/lectic/{{ quiz.slug }}/game/0/0000000/" role="button">Play
+        Again!</a>
+    <!-- <a class="btn btn-outline-primary btn-block" href="{% url 'quiz_selection' %}" role="button">View Quizzes</a> -->
+</div>
+{% endblock %}
+
+</html>

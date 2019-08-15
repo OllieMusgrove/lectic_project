@@ -220,3 +220,10 @@ def leaderboard(request, quiz_name_slug):
 
     context_dict = {'quiz_attempts' : ordered_il}    
     return render(request, 'lectic/leaderboard.html', context_dict)
+
+@login_required
+def quiz_end(request, quiz_name_slug, quiz_attempt_no):
+    quiz_attempt = QuizAttempt.objects.get(auto_id=quiz_attempt_no)
+    print(quiz_attempt.accumulated_score)
+    context_dict = {'quiz_attempt' : quiz_attempt, 'quiz_slug' : quiz_name_slug}    
+    return render(request, 'lectic/quiz_end.html', context_dict)

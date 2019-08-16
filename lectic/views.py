@@ -223,7 +223,21 @@ def leaderboard(request, quiz_name_slug):
 
 @login_required
 def quiz_end(request, quiz_name_slug, quiz_attempt_no):
+    
+    quiz_select = Quiz.objects.get(slug=quiz_name_slug)
     quiz_attempt = QuizAttempt.objects.get(auto_id=quiz_attempt_no)
-    print(quiz_attempt.accumulated_score)
-    context_dict = {'quiz_attempt' : quiz_attempt, 'quiz_slug' : quiz_name_slug}    
+    all_qz_attempts = QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('-performance')
+    outOf = all_qz_attempts.count()
+
+    i = 0
+    for item in QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('performance'):
+        i += 1
+        print ("enumerate...")
+        if item.auto_id == int (quiz_attempt_no):
+            print ("match found")
+            print (i)
+            break
+    
+
+    context_dict = {'quiz_attempt' : quiz_attempt, 'quiz_slug' : quiz_name_slug, 'pos' : i, 'tot' : outOf}    
     return render(request, 'lectic/quiz_end.html', context_dict)

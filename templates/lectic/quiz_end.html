@@ -23,7 +23,6 @@ Review
                 <span class="">{{ quiz_attempt.accumulated_score }}</span> /
                 <span class="">{{ quiz_attempt.qes_possible }}</span>
             </div>
-
         </li>
         <li class="list-group-item justify-content-between">
             Time taken
@@ -53,11 +52,18 @@ Review
             <span class="badge badge-danger">&times;</span>
             {% endif %}
         </li>
+        <li class="list-group-item justify-content-between">
+            Position
+            <div class="text-right">
+                <span class="">{{ pos }}</span> /
+                <span class="">{{ tot }}</span>
+            </div>
+        </li>
     </ul>
 </div>
 <br />
 <div>
-    <a class="btn btn-outline-primary btn-block" href="/lectic/{{ quiz.slug }}/game/0/0000000/" role="button">Play
+    <a class="btn btn-outline-primary btn-block" href="/lectic/{{ quiz_slug }}/game/0/0000000/" role="button">Play
         Again!</a>
     <!-- <a class="btn btn-outline-primary btn-block" href="{% url 'quiz_selection' %}" role="button">View Quizzes</a> -->
 </div>

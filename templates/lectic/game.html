@@ -17,18 +17,35 @@ Game
     var quest_total = parseInt(quest_count)
 </script>
 <script src="{% static 'js/game.js' %}"></script>
-
 {% endblock %}
 
 
 
 {% block body_block %}
 {% if question_select %}
-<div class="progress">
-    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow=""
-        aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%">
+<div class="timer">
+    <div id="countdown" class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar"
+        aria-valuenow="" aria-valuemin="0" aria-valuemax="" style=>
     </div>
 </div>
+<script>
+    var timeLeft = 100;
+    var timeInit = timeLeft;
+    var elem = document.getElementById('countdown');
+    var timerId = setInterval(countdown, 100);
+    function countdown() {
+        if (timeLeft == -1) {
+            clearTimeout(timerId);
+            doSomething();
+        } else {
+            var percentTime = parseInt((timeLeft / timeInit) * 100)
+            elem.style = "width: " + percentTime + "%";
+            timeLeft--;
+        }
+    }
+    function doSomething() {
+    }
+</script>
 <div class="jumbotron">
     <p>{{ question_select.question }}</p>
     <form id="attempt_form" method="post" action=""> {% csrf_token %}
@@ -37,6 +54,11 @@ Game
         </br>
         <input type="submit" class="btn btn-outline-success" name="submit" value="Submit" />
     </form>
+</div>
+<div class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow=""
+        aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%">
+    </div>
 </div>
 {% else %}
 <strong>There are no questions present.</strong>

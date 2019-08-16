@@ -65,25 +65,24 @@ class QuizAttempt(models.Model):
     qes_possible = models.IntegerField(default=0)
     qes_complete = models.IntegerField(default=0)
     finished = models.BooleanField(default=False)
-    all_correct = models.BooleanField(default=False)
-    merit = models.BooleanField(default=False)
-    distinction = models.BooleanField(default=False)
+    all_correct = models.BooleanField(default=False, editable=True)
+    merit = models.BooleanField(default=False, editable=True)
+    distinction = models.BooleanField(default=False, editable=True)
     user = models.ForeignKey(User)
     quiz = models.ForeignKey(Quiz)
 
     def save(self, *args, **kwargs):
-        if self.qes_possible == self.qes_complete:
+        if self.qes_possible == self.qes_complete and self.qes_possible != 0:
             self.finished = True
             if self.accumulated_score == self.qes_possible:
                 self.all_correct = True
-                if self.performance <= (self.qes_possible*5):
-                    self.distinction = True
+                if self.performance <= self.qes_possible*10:
                     self.merit = True
-                elif self.performance <= (self.qes_possible*10):
-                    self.merit = True
-                    self.distinction = False
+                    if self.performance <= self.qes_possible*5:
+                        self.distinction = True
+                    else:
+                        self.distinction = False
                 else:
-                    self.distinction = False
                     self.merit = False
             else:
                 self.all_correct = False
@@ -113,6 +112,7 @@ class QuestionAttempt(models.Model):
         else:
             self.result = False
             self.performance = self.time + 10
+            # self.performance = self.time
             print ('Wrong Answer!')
         super(QuestionAttempt, self).save(*args, **kwargs)
 

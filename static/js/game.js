@@ -1,3 +1,4 @@
+// GLOBAL VARIABLES
 // var question_ans = '{{ question_select.answer }}'
 // var question_select = '{{ question_select }}';
 // var csrf_token = '{{ csrf_token }}';
@@ -8,72 +9,73 @@
 // var new_quiz = '{{ quiz_attempt.auto_id }}'
 // var quest_total = parseInt(quest_count)
 
+//Script
 var timeRemaining = 10;
 console.log("ajax script activated");
 console.log("question number = " + quest_num);
+
+//When page is loaded...
 $(document).ready(function () {
     console.log("doc ready");
     var timerScript = setInterval(timeLimitProcess, 1000);
     console.log("Timer Started");
     var start = new Date();
     console.log("time = " + start);
+
+    //When submit button is pressed
     $('#attempt_form').on('submit', function (event) {
         event.preventDefault();
-        submitProcess();
-        // var end = new Date();
-        // var difference = (end - start) / 1000;
-        // console.log("time = " + difference + " seconds");
-        // // var question_ans = '{{ question_select.answer }}';
-        // console.log("Answer = " + question_ans);
-        // // alert("Elasped time = " + difference + " seconds \n Correct Answer = " + question_ans);
-        // start = new Date();
-        // $.ajax({
-        //     type: "POST",
-        //     url: "/lectic/" + quiz_slug + "/game/" + quest_num + "/" + init_quiz_no + "/",
-        //     data: {
-        //         'csrfmiddlewaretoken': $('#attempt_form input[name=csrfmiddlewaretoken]').val(),
-        //         'attempt': $('#attempt_text').val(),
-        //         'time': difference,
-        //     },
-        //     success: function (data) {
-        //         // timeRemaining = 1000;
-        //         clearTimeout(timerScript)
-        //         timeLeft = 0;
-        //         swal("Nice one!", "You submitted in time!", "success")
-        //             .then(() => {
-        //                 var new_num = parseInt(quest_num) + 1;
-        //                 console.log(new_num)
-        //                 if (quest_total > new_num) {
-        //                     // alert("Destination id = {{ quiz_attempt.auto_id }}")
-        //                     location.href = "/lectic/" + quiz_slug + "/game/" + new_num + "/" + new_quiz + "/";
-        //                 }
-        //                 else {
-        //                     location.href = "/lectic/" + quiz_slug + "/quiz_end/" + new_quiz + "/";
-        //                 }
-        //             });
-
-        //     },
-        //     dataType: 'html'
-        // });
+        var x = false
+        submitProcess(x);
     });
+
+    //Called every 1 second
     function timeLimitProcess() {
         if (timeRemaining == 1) {
             console.log("Time Up!");
             // clearTimeout(timerScript);
-            submitProcess();
+            var x = true
+            submitProcess(x);
         } else {
             timeRemaining--;
             console.log(timeRemaining);
         }
     }
-    function submitProcess() {
+
+    // Called when timer done or submit button pressed
+    function submitProcess(forced) {
         var end = new Date();
         var difference = (end - start) / 1000;
         console.log("time = " + difference + " seconds");
-        // var question_ans = '{{ question_select.answer }}';
         console.log("Answer = " + question_ans)
-        // alert("Elasped time = " + difference + " seconds \n Correct Answer = " + question_ans);
         start = new Date();
+        var alertStyle
+        var titleMes
+        var textMes
+        var submittedAns = $('#attempt_text').val();
+        if (forced) {
+            console.log("This was forced")
+            alertStyle = "warning"
+            titleMes = "Out of time!"
+            textMes = "Answer = " + question_ans
+        }
+        else {
+            console.log("This was not forced")
+            if (submittedAns === question_ans) {
+                alertStyle = "success"
+                titleMes = "Correct!"
+                textMes = "Answer = " + question_ans
+                console.log("Correct Answer JS")
+            }
+            else {
+                alertStyle = "error"
+                titleMes = "Incorrect"
+                textMes = "Answer = " + question_ans
+                console.log("Incorrect Answer JS")
+            }
+        }
+
+        //Ajax method to send answer and time back to Django
         $.ajax({
             type: "POST",
             url: "/lectic/" + quiz_slug + "/game/" + quest_num + "/" + init_quiz_no + "/",
@@ -82,22 +84,24 @@ $(document).ready(function () {
                 'attempt': $('#attempt_text').val(),
                 'time': difference,
             },
+            //Once posted, this method is called
             success: function (data) {
+                console.log("Sumbitted answer = ")
+                console.log(submittedAns)
                 clearTimeout(timerScript);
                 timeLeft = 0;
-                swal("Oh no!", "You ran out of time", "error")
+                //Sweet Alert brings up an animated js alert
+                swal(titleMes, textMes, alertStyle)
                     .then(() => {
                         var new_num = parseInt(quest_num) + 1;
                         console.log(new_num)
                         if (quest_total > new_num) {
-                            // alert("Destination id = {{ quiz_attempt.auto_id }}")
                             location.href = "/lectic/" + quiz_slug + "/game/" + new_num + "/" + new_quiz + "/";
                         }
                         else {
                             location.href = "/lectic/" + quiz_slug + "/quiz_end/" + new_quiz + "/";
                         }
                     });
-
             },
             dataType: 'html'
         });

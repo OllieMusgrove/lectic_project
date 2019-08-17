@@ -3,6 +3,7 @@
 
 {% block links_block %}
 Game
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <script>
     var csrf_token = '{{ csrf_token }}';
@@ -14,9 +15,11 @@ Game
     var quest_count = '{{ questions.count }}';
     var init_quiz_no = '{{ init_quiz }}';
     var new_quiz = '{{ quiz_attempt.auto_id }}';
-    var quest_total = parseInt(quest_count)
+    var quest_total = parseInt(quest_count);
+    var timeLeft = 100;
 </script>
-<script src="{% static 'js/game.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script type="text/javascript" src="{% static 'js/game.js' %}"></script>
 {% endblock %}
 
 
@@ -29,12 +32,12 @@ Game
     </div>
 </div>
 <script>
-    var timeLeft = 100;
+    // var timeLeft = 100;
     var timeInit = timeLeft;
     var elem = document.getElementById('countdown');
     var timerId = setInterval(countdown, 100);
     function countdown() {
-        if (timeLeft == -1) {
+        if (timeLeft == 1) {
             clearTimeout(timerId);
             doSomething();
         } else {

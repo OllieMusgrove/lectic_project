@@ -232,7 +232,6 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
     i = 0
     for item in QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('performance'):
         i += 1
-        print ("enumerate...")
         if item.auto_id == int (quiz_attempt_no):
             print ("match found")
             print (i)

@@ -58,11 +58,30 @@ Game
         <input type="submit" class="btn btn-outline-success" name="submit" value="Submit" />
     </form>
 </div>
-<div class="progress">
-    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow=""
-        aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%">
+<!-- <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"
+        style="width: {{ progress }}%">
+        <p class="float-left">
+            &nbsp Question {{ q_num_display }} / {{ questions.count }}
+        </p>
     </div>
+</div> -->
+<!-- <div>
+    <span class="badge badge-pill badge-info float-right">Question {{ q_num_display }} /
+        {{ questions.count }}</span>
+</div> -->
+<div>
+    <ol class="breadcrumb">
+        <div class="d-flex justify-content-center">
+            <li class="breadcrumb-item active text-center">
+                Question {{ q_num_display }} / {{ questions.count }}
+            </li>
+        </div>
+    </ol>
 </div>
+
+
+
 {% else %}
 <strong>There are no questions present.</strong>
 {% endif %}

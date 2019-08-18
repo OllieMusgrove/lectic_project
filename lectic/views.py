@@ -108,6 +108,7 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
         quiz_attempt_no = str (quiz_attempt_int)
     
     quest_num = int (question_number)
+    display_num = quest_num + 1
 
     question_list = None
     try:
@@ -144,10 +145,10 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
         quiz_attempt.save()
         print(quiz_attempt.performance)
 
-    qn_plus = quest_num + 1 #may need exception handling...
+    qn_plus = quest_num #may need exception handling...
     progress = int ((qn_plus/question_list.count())*100)
 
-    context_dict = {'progress': progress, 'questions': question_list, 'question_select': question_select,'question_number': quest_num, 'quiz_attempt' : quiz_attempt, 'init_quiz' : quiz_attempt_no}
+    context_dict = {'q_num_display': display_num, 'progress': progress, 'questions': question_list, 'question_select': question_select,'question_number': quest_num, 'quiz_attempt' : quiz_attempt, 'init_quiz' : quiz_attempt_no}
     return render(request, 'lectic/game.html', context_dict)
 
 @login_required
@@ -195,6 +196,7 @@ def add_question(request, quiz_name_slug):
     context_dict = {'quiz': quiz_select, 'form': form}    
     return render(request, 'lectic/add_question.html', context_dict)
 
+@login_required
 def leaderboard(request, quiz_name_slug):
     try:
         quiz_select = Quiz.objects.get(slug=quiz_name_slug)

@@ -68,6 +68,9 @@ def index(request):
     context_dict = {'perm': perm}
     return render(request, 'lectic/index.html', context_dict)
 
+def about(request):
+    return render(request, 'lectic/about.html', {})
+
 @login_required
 def user_logout(request):
     logout(request)
@@ -248,5 +251,7 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
 def delete(request, quiz_name_slug, question_name_slug):
     quiz_select = Quiz.objects.get(slug=quiz_name_slug)
     object = Question.objects.get(slug=question_name_slug, quiz=quiz_select)
+    # except Question.DoesNotExist: <- add exception handling
+    # except Question.MultipleObjectsReturned:
     object.delete()
     return add_question(request,quiz_name_slug)

@@ -1,7 +1,7 @@
 from django import forms
 from lectic.models import Question
 from lectic.models import Quiz
-from lectic.models import QuestionAttempt
+from lectic.models import QuestionAttempt, Module
 
 from django.contrib.auth.models import User
 from lectic.models import UserProfile
@@ -36,6 +36,9 @@ class QuestionForm(forms.ModelForm):
 class QuizForm(forms.ModelForm):
     name = forms.CharField(max_length=100, help_text="Quiz Name: ")
     level = forms.IntegerField(widget=forms.Select(choices=LEVELS_CHOICES), help_text="Level: ")
+    module = forms.ModelChoiceField(queryset=Module.objects.all(),
+                                    to_field_name = 'name',
+                                    empty_label="Select Module", help_text="Module: ")
 
     class Meta:
         model = Quiz

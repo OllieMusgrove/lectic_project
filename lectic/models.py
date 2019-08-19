@@ -120,3 +120,16 @@ class QuestionAttempt(models.Model):
         return self.id
 
 
+class Module(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Module, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = 'modules'
+
+    def __str__(self):
+        return self.name

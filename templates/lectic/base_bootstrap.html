@@ -33,26 +33,23 @@
       aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="{% url 'index' %}">Lectic</a>
+    <a class="navbar-brand" href="{% url 'index' %}">Lectic &#10004;</a>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <a class="nav-link" href="{% url 'index' %}">Home<span class="sr-only">(current)</span></a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'about' %}">About</a>
+        </li>
         {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-        </li>
-        {% if user.user_profile.is_lecturer %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'add_quiz' %}">Quiz Admin</a>
-        </li>
-        {% else %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'quiz_selection' %}">View Games</a>
         </li>
-        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+        </li>
         {% else %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'login' %}">Sign In</a>

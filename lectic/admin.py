@@ -1,6 +1,6 @@
 from django.contrib import admin
 from lectic.models import Question
-from lectic.models import Quiz
+from lectic.models import Quiz, Module
 from lectic.models import QuestionAttempt
 from lectic.models import QuizAttempt
 from lectic.models import UserProfile
@@ -19,9 +19,13 @@ class QuizAttemptAdmin(admin.ModelAdmin):
     list_display = ('user','quiz','created_datetime', 'auto_id', 'performance','accumulated_score', 'qes_possible','qes_complete','finished','all_correct','merit','distinction')
     ordering = ('-created_datetime',)
 
+class ModuleAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
 # Register your models here.
 admin.site.register(Quiz, QuizAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(QuestionAttempt, QuestionAttemptAdmin)
 admin.site.register(QuizAttempt, QuizAttemptAdmin)
 admin.site.register(UserProfile)
+admin.site.register(Module,ModuleAdmin)

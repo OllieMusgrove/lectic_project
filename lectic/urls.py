@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^(?P<quiz_name_slug>[\w\-]+)/quiz_end/(?P<quiz_attempt_no>[0-9]{7})/$', views.quiz_end, name='quiz_end'),
+    url(r'^delete/(?P<quiz_name_slug>[\w\-]+)/(?P<question_name_slug>[\w\-]+)/$', views.delete, name='delete'),
 ]

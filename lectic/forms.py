@@ -6,6 +6,8 @@ from lectic.models import QuestionAttempt
 from django.contrib.auth.models import User
 from lectic.models import UserProfile
 
+LEVELS_CHOICES = [tuple([x,x]) for x in range(1,10)]
+
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     
@@ -23,8 +25,8 @@ class UserProfileForm(forms.ModelForm):
 
 
 class QuestionForm(forms.ModelForm):
-    question = forms.CharField(max_length=1000, help_text="Please enter a question")
-    answer = forms.CharField(max_length=100, help_text="Please enter the answer")
+    question = forms.CharField(max_length=1000, help_text="Please enter a question", label="Question: ")
+    answer = forms.CharField(max_length=100, help_text="Please enter the answer", label="Answer: ")
 
     class Meta:
         model = Question
@@ -32,7 +34,8 @@ class QuestionForm(forms.ModelForm):
 
 
 class QuizForm(forms.ModelForm):
-    name = forms.CharField(max_length=100, help_text="Please enter a quiz name")
+    name = forms.CharField(max_length=100, help_text="Quiz Name: ")
+    level = forms.IntegerField(widget=forms.Select(choices=LEVELS_CHOICES), help_text="Level: ")
 
     class Meta:
         model = Quiz

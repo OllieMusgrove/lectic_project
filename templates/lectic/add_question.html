@@ -21,16 +21,47 @@ Add Question
             {% endfor %}
             {% for field in form.visible_fields %}
             {{ field.errors }}
-            {{ field.help_text }}
+            {{ field.label }}
             {{ field }}
             <br /><br />
             {% endfor %}
+            Quiz = {{ quiz.name }}
+            <br /><br />
             <input type="submit" class="btn btn-danger" name="submit" value="Create Question" />
         </form>
         {% else %}
         <strong>There are no quizzes present.</strong>
         {% endif %}
     </div>
+</div>
+<div class="text-left">
+    {% if questions %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col-8">Question</th>
+                <th class="col-3">Answer</th>
+                <th class="col-1">
+                    <div class="text-right">Delete</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for q in questions %}
+            <tr>
+                <td class="col-8">{{ q.question }}</td>
+                <td class="col-3">{{ q.answer }}</td>
+                <td class="col-1"><a href="/lectic/delete/{{ quiz.slug }}/{{ q.slug }}/" class="close" role="button"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <strong>No questions have been added to {{ quiz }} yet! </strong>
+    {% endif %}
 </div>
 {% endblock %}
 

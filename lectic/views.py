@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -177,8 +177,10 @@ def add_quiz(request):
 def add_question(request, quiz_name_slug):
     try:
         quiz_select = Quiz.objects.get(slug=quiz_name_slug)
+        questions = Question.objects.filter(quiz=quiz_select)
     except Quiz.DoesNotExist:
         quiz_select = None
+        questions = None
 
     form = QuestionForm()
     if request.method == 'POST':
@@ -193,7 +195,7 @@ def add_question(request, quiz_name_slug):
         else:
             print(form.errors)      
 
-    context_dict = {'quiz': quiz_select, 'form': form}    
+    context_dict = {'questions': questions, 'quiz': quiz_select, 'form': form}    
     return render(request, 'lectic/add_question.html', context_dict)
 
 @login_required
@@ -239,6 +241,12 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
             print (i)
             break
     
-
     context_dict = {'quiz_attempt' : quiz_attempt, 'quiz_slug' : quiz_name_slug, 'pos' : i, 'tot' : outOf}    
     return render(request, 'lectic/quiz_end.html', context_dict)
+
+@login_required
+def delete(request, quiz_name_slug, question_name_slug):
+    quiz_select = Quiz.objects.get(slug=quiz_name_slug)
+    object = Question.objects.get(slug=question_name_slug, quiz=quiz_select)
+    object.delete()
+    return add_question(request,quiz_name_slug)

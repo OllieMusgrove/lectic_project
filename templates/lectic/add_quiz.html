@@ -19,23 +19,27 @@ Add Quiz
         {{ field.errors }}
         {{ field.help_text }}
         {{ field }}
+        </br>
         {% endfor %}
+        </br>
         <input type="submit" class="btn btn-primary" name="submit" value="Create Quiz" />
     </form>
 </div>
 <div>
     {% if quizzes %}
-    <div class="text-left">
+    <ul class="list-group">
         {% for quiz in quizzes %}
-        <div class="text-left">
-            <a href="#" class="btn btn-secondary-outlined disabled" role="button"
-                aria-disabled="true">{{ quiz.name }}</a>
-            <a class="btn btn-primary" href="/lectic/{{ quiz.slug }}/add_question/" role="button">Add Question</a>
-            <a class="btn btn-warning" href="/lectic/{{ quiz.slug }}/leaderboard/" role="button">Leaderboard</a>
-            </br></br>
-        </div>
+        <li class="list-group-item justify-content-between">
+            {{ quiz.name }}
+            <div>
+                <a class="btn btn-primary" href="/lectic/{{ quiz.slug }}/add_question/" role="button">Add
+                    Question</a>
+                <a class="btn btn-warning" href="/lectic/{{ quiz.slug }}/leaderboard/" role="button">Leaderboard</a>
+            </div>
+
+        </li>
         {% endfor %}
-    </div>
+    </ul>
     {% else %}
     <strong>There are no quizzes present.</strong>
     {% endif %}

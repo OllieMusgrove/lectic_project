@@ -42,7 +42,7 @@ class QuizForm(forms.ModelForm):
 
     class Meta:
         model = Quiz
-        fields = ('name',)
+        fields = ('name','level','module')
 
 
 class QuestionAttemptForm(forms.ModelForm):

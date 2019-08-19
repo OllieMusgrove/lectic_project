@@ -6,7 +6,7 @@ from lectic.models import QuizAttempt
 from lectic.models import UserProfile
 
 class QuizAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name','level','module')
 
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('question', 'answer','quiz')

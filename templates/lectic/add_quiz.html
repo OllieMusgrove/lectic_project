@@ -26,25 +26,31 @@ Add Quiz
     </form>
 </div>
 <div>
-    {% if quizzes %}
+    {% for module in modules %}
+    <div class="text-left">
+        <h5>{{ module }}</h5>
+    </div>
     <ul class="list-group">
         {% for quiz in quizzes %}
+        {% if quiz.module == module %}
         <li class="list-group-item justify-content-between">
             {{ quiz.name }}
+            <span class="badge badge-pill badge-danger float-left">Level {{ quiz.level}}</span>
             <div>
-                <a class="btn btn-primary" href="/lectic/{{ quiz.slug }}/add_question/" role="button">Add
+                <a class="btn btn-outline-primary" href="/lectic/{{ quiz.slug }}/add_question/" role="button">Add
                     Question</a>
-                <a class="btn btn-warning" href="/lectic/{{ quiz.slug }}/leaderboard/" role="button">Leaderboard</a>
+                <a class="btn btn-outline-warning" href="/lectic/{{ quiz.slug }}/leaderboard/"
+                    role="button">Leaderboard</a>
             </div>
-
         </li>
+        {% else %}
+        <!-- <strong>There are no quizzes present for this module.</strong> -->
+        {% endif %}
         {% endfor %}
-    </ul>
-    {% else %}
-    <strong>There are no quizzes present.</strong>
-    {% endif %}
+    </ul></br>
+    {% endfor %}
 </div>
-</br>
+</br></br></br>
 <div>
     <div class="alert alert-warning" role="alert">
         <strong>Note: </strong> If you don't see your module, please contact an admin.

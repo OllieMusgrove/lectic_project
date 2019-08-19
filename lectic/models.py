@@ -24,9 +24,27 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+
+class Module(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Module, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = 'modules'
+
+    def __str__(self):
+        return self.name
+
+
 class Quiz(models.Model):
     name = models.CharField(max_length=100, unique=False)
     slug = models.SlugField()
+    level = models.IntegerField(default=1)
+    module = models.ForeignKey(Module, on_delete=models.SET_NULL, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -118,18 +136,3 @@ class QuestionAttempt(models.Model):
 
     def __str__(self):
         return self.id
-
-
-class Module(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField()
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Module, self).save(*args, **kwargs)
-
-    class Meta:
-        verbose_name_plural = 'modules'
-
-    def __str__(self):
-        return self.name

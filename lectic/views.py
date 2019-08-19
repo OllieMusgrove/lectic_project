@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from datetime import datetime
-from lectic.models import Question, Quiz, QuestionAttempt, QuizAttempt, UserProfile, User
+from lectic.models import Question, Quiz, QuestionAttempt, QuizAttempt, UserProfile, User, Module
 from lectic.forms import QuestionForm, QuizForm, QuestionAttemptForm, UserForm, UserProfileForm
 from decimal import Decimal
 from django.contrib.auth import authenticate, login, logout
@@ -162,6 +162,11 @@ def add_quiz(request):
     except Quiz.DoesNotExist:
         quiz_list = None
     
+    try:
+        module_list = Module.objects.all
+    except Quiz.DoesNotExist:
+        module = None
+
     form = QuizForm()
     if request.method == 'POST':
         form = QuizForm(request.POST)
@@ -173,7 +178,7 @@ def add_quiz(request):
         else:
             print(form.errors)    
     
-    context_dict = {'quizzes': quiz_list, 'form': form}    
+    context_dict = {'modules':module_list,'quizzes': quiz_list, 'form': form}    
     return render(request, 'lectic/add_quiz.html', context_dict)
 
 @login_required

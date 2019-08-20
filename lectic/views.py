@@ -103,7 +103,7 @@ def quiz_selection(request):
 
     user_profile = UserProfile.objects.get(user=request.user)
     coins = user_profile.coins
-    unlocked = int (coins/10)
+    unlocked = int (coins/10)+1
 
     context_dict = {'unlocked': unlocked,'coins': coins,'modules': module_list, 'quizzes': quiz_list}
     return render(request, 'lectic/quiz_selection.html', context_dict)
@@ -130,6 +130,11 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
     else:
         quiz_attempt = QuizAttempt.objects.get(auto_id=quiz_attempt_int)
         quiz_attempt_int = quiz_attempt.auto_id
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile.coins = user_profile.coins + quiz_attempt.coins
+        user_profile.save()
+        print ("coins added")
+        print (user_profile.coins)
     
     if quiz_attempt_int == 0000000:
         quiz_attempt_no = "0000000"
@@ -264,25 +269,41 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
     
     quiz_select = Quiz.objects.get(slug=quiz_name_slug)
     quiz_attempt = QuizAttempt.objects.get(auto_id=quiz_attempt_no)
-    all_qz_attempts = QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('-performance')
-    outOf = all_qz_attempts.count()
-    user_current = request.user
-    print(user_current)
-    user_profile = UserProfile.objects.get(user=request.user)
-    user_profile.coins = user_profile.coins + quiz_attempt.coins
-    user_profile.save()
-    print ("coins added")
-    print (user_profile.coins)
 
+    all_qz_attempts = QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('-performance')
+    best_user_performances = [all_qz_attempts.filter(user=item['user']).last() for item in UserProfile.objects.filter(is_lecturer=False).values('user').distinct()]
+    ranked_by_user = sorted(best_user_performances, key=lambda x: x.performance, reverse=False)
+    total_quiz_user_attempts = len(best_user_performances)
+    print (best_user_performances)
+    print (total_quiz_user_attempts)
+
+    outOf = all_qz_attempts.count()
+    attempt = QuizAttempt.objects.exclude(finished=False).filter(user=request.user).filter(quiz=quiz_select).count()
+
+#calculates quiz attempt performace relative to all completed quizzes
     i = 0
     for item in QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('performance'):
         i += 1
         if item.auto_id == int (quiz_attempt_no):
-            print ("match found")
-            print (i)
             break
-    
-    context_dict = {'quiz_attempt' : quiz_attempt, 'quiz_slug' : quiz_name_slug, 'pos' : i, 'tot' : outOf}    
+
+#calculates user performace for quiz-select
+    for performance in best_user_performances:
+        if performance.user == request.user:
+            pb = performance
+            print ("pb found")
+            break
+
+    j = 0
+    for qa in ranked_by_user:
+        j += 1
+        if qa.auto_id == pb.auto_id:
+            print ("match found")
+            print (j)
+            break
+
+
+    context_dict = {'tot_class':total_quiz_user_attempts,'pos_inclass': j,'pb':pb,'attempt':attempt,'quiz_attempt' : quiz_attempt, 'quiz_slug' : quiz_name_slug, 'pos' : i, 'tot' : outOf}    
     return render(request, 'lectic/quiz_end.html', context_dict)
 
 @login_required

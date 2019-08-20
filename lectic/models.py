@@ -95,11 +95,12 @@ class QuizAttempt(models.Model):
     def save(self, *args, **kwargs):
         if self.qes_possible == self.qes_complete and self.qes_possible != 0:
             self.finished = True
+            self.coins = self.coins + 1
             if self.accumulated_score == self.qes_possible:
                 self.all_correct = True
                 if self.performance <= self.qes_possible*10:
                     self.merit = True
-                    self.coins = self.coins + 5
+                    self.coins = self.coins + 4
                     print ("merit coins added")
                     if self.performance <= self.qes_possible*5:
                         self.distinction = True

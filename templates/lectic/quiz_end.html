@@ -18,6 +18,10 @@ Review
             Quiz Summary
         </li>
         <li class="list-group-item justify-content-between">
+            Attempt
+            <span class="">{{ attempt }}</span>
+        </li>
+        <li class="list-group-item justify-content-between">
             Score
             <div class="text-right">
                 <span class="">{{ quiz_attempt.accumulated_score }}</span> /
@@ -25,27 +29,27 @@ Review
             </div>
         </li>
         <li class="list-group-item justify-content-between">
-            Time taken
+            <span>Time taken<sup>*</sup></span>
             <span class="">{{ quiz_attempt.performance }} s</span>
         </li>
         <li class="list-group-item justify-content-between">
-            Passed
+            Full marks
             {% if quiz_attempt.all_correct == True %}
             <span class="badge badge-success">&#10004;</span>
             {% else %}
             <span class="badge badge-danger">&times;</span>
             {% endif %}
         </li>
-        <li class="list-group-item justify-content-between">
+        <!-- <li class="list-group-item justify-content-between">
             Merit
             {% if quiz_attempt.merit == True %}
             <span class="badge badge-success">&#10004;</span>
             {% else %}
             <span class="badge badge-danger">&times;</span>
             {% endif %}
-        </li>
+        </li> -->
         <li class="list-group-item justify-content-between">
-            Distinction
+            Speed bonus
             {% if quiz_attempt.distinction == True %}
             <span class="badge badge-success">&#10004;</span>
             {% else %}
@@ -53,15 +57,42 @@ Review
             {% endif %}
         </li>
         <li class="list-group-item justify-content-between">
-            Position
+            Quiz position
             <div class="text-right">
                 <span class="">{{ pos }}</span> /
                 <span class="">{{ tot }}</span>
             </div>
         </li>
+        <li class="list-group-item justify-content-between">
+            Coins earned
+            <span class="badge badge-warning"> + {{ quiz_attempt.coins }}</span>
+        </li>
     </ul>
 </div>
 <br />
+<div>
+    <ul class="list-group">
+        <!-- <li class="list-group-item active justify-content-between">
+            Personal Summary
+        </li> -->
+        <li class="list-group-item justify-content-between">
+            Personal best
+            <span class="">
+                {% if pb.performance == quiz_attempt.performance %}
+                <span class="badge badge-info">New!</span> {{ pb.performance }} s</span>
+            {% else %}
+            {% endif %}
+        </li>
+        <li class="list-group-item justify-content-between">
+            Class position
+            <div class="text-right">
+                <span class="">{{ pos_inclass }}</span> /
+                <span class="">{{ tot_class }}</span>
+            </div>
+        </li>
+    </ul>
+    <p class="text-left"><small class="text-muted">*Penalty of +10s applied for incorrect answers</small></p>
+</div>
 <div>
     <a class="btn btn-outline-primary btn-block" href="/lectic/{{ quiz_slug }}/game/0/0000000/" role="button">Play
         Again!</a>

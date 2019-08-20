@@ -19,10 +19,16 @@ Home
             </h5>
 </div>
 <div>
+    {% if user.is_authenticated %}
     <a class="btn btn-primary btn-lg btn-block" href="{% url 'quiz_selection' %}" role="button">Select Game</a>
+    <a class="btn btn-warning btn-lg btn-block" href="{% url 'logout' %}" role="button">Sign Out</a>
     {% if perm == True %}
-    <a class="btn btn-warning btn-lg btn-block" href="{% url 'add_quiz' %}" role="button">Quiz Admin</a>
+    <a class="btn btn-info btn-lg btn-block" href="{% url 'add_quiz' %}" role="button">Quiz Admin</a>
     {% else %}
+    {% endif %}
+    {% else %}
+    <a class="btn btn-primary btn-lg btn-block" href="{% url 'login' %}" role="button">Sign In</a>
+    <a class="btn btn-warning btn-lg btn-block" href="{% url 'register' %}" role="button">Register</a>
     {% endif %}
 </div>
 {% endblock %}

@@ -33,11 +33,12 @@
       aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="{% url 'index' %}">Lectic &#10004;</a>
+    <a class="navbar-brand" href="{% url 'index' %}">Lectic &#10004; <span class="badge badge-info">BETA</span>
+    </a>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'index' %}">Home<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">

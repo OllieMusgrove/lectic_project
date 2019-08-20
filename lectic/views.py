@@ -78,8 +78,23 @@ def user_logout(request):
 
 @login_required
 def quiz_selection(request):
-    quiz_list = Quiz.objects.all
-    context_dict = {'quizzes': quiz_list}
+    try:
+        quiz_list = Quiz.objects.all().order_by('level')
+    except Quiz.DoesNotExist:
+        quiz_list = None
+    
+    try:
+        module_list = Module.objects.all()
+    except Module.DoesNotExist:
+        module_list = None
+    
+    # try:
+    #     module_available = Module.objects.all()
+    #     quiz_available = Quiz.objects.all()
+    # except Quiz.DoesNotExist:
+    #     module_list = None
+
+    context_dict = {'modules': module_list, 'quizzes': quiz_list}
     return render(request, 'lectic/quiz_selection.html', context_dict)
 
 @login_required
@@ -158,12 +173,12 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
 def add_quiz(request):
     
     try:
-        quiz_list = Quiz.objects.all
+        quiz_list = Quiz.objects.all().order_by('level')
     except Quiz.DoesNotExist:
         quiz_list = None
     
     try:
-        module_list = Module.objects.all
+        module_list = Module.objects.all()
     except Quiz.DoesNotExist:
         module = None
 

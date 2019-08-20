@@ -12,16 +12,23 @@ Selection
     <h3>Select Quiz</h3>
 </div>
 <div>
-    {% if quizzes %}
+    {% for module in modules %}
+    <div class="text-left">
+        <h5>{{ module }}</h5>
+    </div>
     <div class="text-centre">
         {% for quiz in quizzes %}
+        {% if quiz.module == module %}
         <a class="btn btn-outline-primary btn-lg btn-block" href="/lectic/{{ quiz.slug }}/game/0/0000000/"
-            role="button">{{ quiz.name }}<span class="badge badge-pill badge-danger float-right">Level 1</span></a>
+            role="button">{{ quiz.name }}<span class="badge badge-pill badge-danger float-right">Level
+                {{ quiz.level }}</span></a>
+        <!-- <strong>There are no quizzes present.</strong> -->
+        {% else %}
+        {% endif %}
         {% endfor %}
     </div>
-    {% else %}
-    <strong>There are no quizzes present.</strong>
-    {% endif %}
+    </br>
+    {% endfor %}
 </div>
 
 {% endblock %}

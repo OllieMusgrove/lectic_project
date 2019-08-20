@@ -22,6 +22,9 @@ class QuizAttemptAdmin(admin.ModelAdmin):
 class ModuleAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'matric_number', 'coins', 'is_lecturer')
+
 # Register your models here.
 admin.site.register(Quiz, QuizAdmin)
 admin.site.register(Question, QuestionAdmin)

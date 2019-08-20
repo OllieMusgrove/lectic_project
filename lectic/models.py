@@ -13,10 +13,12 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     is_lecturer = models.BooleanField(default='False')
     matric_number = models.CharField(max_length=8, unique=False)
+    coins = models.PositiveIntegerField(default=0)
 
     def save(self, *args, **kwargs):
         if (self.matric_number == "LECTURER"):
             self.is_lecturer = True
+            self.coins = 1000
         else:
             self.is_lecturer = False
         super(UserProfile, self).save(*args, **kwargs)
@@ -88,6 +90,7 @@ class QuizAttempt(models.Model):
     distinction = models.BooleanField(default=False, editable=True)
     user = models.ForeignKey(User)
     quiz = models.ForeignKey(Quiz)
+    coins = models.PositiveIntegerField(default=0)
 
     def save(self, *args, **kwargs):
         if self.qes_possible == self.qes_complete and self.qes_possible != 0:
@@ -96,8 +99,12 @@ class QuizAttempt(models.Model):
                 self.all_correct = True
                 if self.performance <= self.qes_possible*10:
                     self.merit = True
+                    self.coins = self.coins + 5
+                    print ("merit coins added")
                     if self.performance <= self.qes_possible*5:
                         self.distinction = True
+                        self.coins = self.coins + 5
+                        print ("distinction coins added")
                     else:
                         self.distinction = False
                 else:

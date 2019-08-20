@@ -90,11 +90,22 @@ def quiz_selection(request):
     
     # try:
     #     module_available = Module.objects.all()
-    #     quiz_available = Quiz.objects.all()
-    # except Quiz.DoesNotExist:
-    #     module_list = None
+    #     quiz_available = Quiz.objects.filter(module=module_available)
+    #     # distinct_quiz_mod = [quiz_available.filter(module=item['module']) for item in quiz_available.values('module').distinct]
+    #     # module_available = Module.objects.filter(name_in=quiz_available)
+    #     # item_list = [all_qz_attempts.filter(user=item['user']).last() for item in UserProfile.objects.filter(is_lecturer=False).values('user').distinct()]
+    #     print (module_available)
+    #     print (quiz_available)
+    #     # print (distinct_quiz_mod)
 
-    context_dict = {'modules': module_list, 'quizzes': quiz_list}
+    except Quiz.DoesNotExist:
+        module_list = None
+
+    user_profile = UserProfile.objects.get(user=request.user)
+    coins = user_profile.coins
+    unlocked = int (coins/10)
+
+    context_dict = {'unlocked': unlocked,'coins': coins,'modules': module_list, 'quizzes': quiz_list}
     return render(request, 'lectic/quiz_selection.html', context_dict)
 
 @login_required
@@ -255,6 +266,13 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
     quiz_attempt = QuizAttempt.objects.get(auto_id=quiz_attempt_no)
     all_qz_attempts = QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('-performance')
     outOf = all_qz_attempts.count()
+    user_current = request.user
+    print(user_current)
+    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile.coins = user_profile.coins + quiz_attempt.coins
+    user_profile.save()
+    print ("coins added")
+    print (user_profile.coins)
 
     i = 0
     for item in QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('performance'):

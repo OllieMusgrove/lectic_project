@@ -8,10 +8,15 @@ Selection
 {% endblock %}
 
 {% block body_block %}
-<div class="jumbotron">
+<div class="breadcrumb">
     <h3>Select Quiz</h3>
 </div>
 <div>
+    <div class="breadcrumb text-left">
+        <span class="float-left">Your coins: <span class="badge badge-pill badge-warning">{{ coins }} </span></span>
+        <span class="float-right">Unlocked: <span class="badge badge-pill badge-danger">Level {{ unlocked }}
+            </span></span>
+    </div>
     {% for module in modules %}
     <div class="text-left">
         <h5>{{ module }}</h5>
@@ -19,10 +24,16 @@ Selection
     <div class="text-centre">
         {% for quiz in quizzes %}
         {% if quiz.module == module %}
+        {% if quiz.level <= unlocked %}
         <a class="btn btn-outline-primary btn-lg btn-block" href="/lectic/{{ quiz.slug }}/game/0/0000000/"
             role="button">{{ quiz.name }}<span class="badge badge-pill badge-danger float-right">Level
                 {{ quiz.level }}</span></a>
         <!-- <strong>There are no quizzes present.</strong> -->
+        {% else %}
+        <a class="btn btn-outline-primary btn-lg btn-block disabled" href="/lectic/{{ quiz.slug }}/game/0/0000000/"
+            role="button">{{ quiz.name }}&#128274;<span class="badge badge-pill badge-danger float-right">Level
+                {{ quiz.level }}</span></a>
+        {% endif %}
         {% else %}
         {% endif %}
         {% endfor %}

@@ -31,7 +31,7 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = 'fs5wg7#mik_%)x1$vtqrns1tnx(j!944wquro64yhmpcflzm@4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['http://Lectic.pythonanywhere.com']
 

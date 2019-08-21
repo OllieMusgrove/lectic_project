@@ -77,8 +77,8 @@ class Question(models.Model):
 
 
 class QuizAttempt(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    auto_id = models.IntegerField(default=3000000)
+    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    auto_id = models.IntegerField(default=1000000)
     created_datetime = models.DateTimeField(default=datetime.datetime.now)
     performance = models.DecimalField(decimal_places = 3, max_digits = 10, default=0.000, editable=True)
     accumulated_score = models.IntegerField(default=0)
@@ -121,7 +121,7 @@ class QuizAttempt(models.Model):
 
 
 class QuestionAttempt(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     time_stamp = models.DateTimeField(auto_now_add=True)
     question = models.ForeignKey(Question)
     attempt = models.CharField(max_length=100, unique=False)
@@ -143,4 +143,4 @@ class QuestionAttempt(models.Model):
         super(QuestionAttempt, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.id
+        return self.time_stamp

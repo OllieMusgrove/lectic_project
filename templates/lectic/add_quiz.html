@@ -9,22 +9,38 @@ Add Quiz
 {% endblock %}
 
 {% block body_block %}
-<div class="jumbotron">
-    <h1>Add a Quiz</h1>
-    <form id="quiz_form" method="post" action="/lectic/add_quiz/"> {% csrf_token %}
-        {% for hidden in form.hidden_fields %}
-        {{ hidden }}
-        {% endfor %}
-        {% for field in form.visible_fields %}
-        {{ field.errors }}
-        {{ field.help_text }}
-        {{ field }}
-        </br>
-        {% endfor %}
-        </br>
-        <input type="submit" class="btn btn-primary" name="submit" value="Create Quiz" />
-    </form>
+<div class="breadcrumb">
+    <h1>Quiz Admin</h1>
 </div>
+<div>
+    <form class="form" id="quiz_form" method="post" action="/lectic/add_quiz/"> {% csrf_token %}
+        <ul class="list-group">
+
+            <li class="list-group-item list-group-item-info justify-content-between" style="border: none">
+
+                {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+                {% endfor %}
+                {% for field in form.visible_fields %}
+
+                <!-- <label class="sr-only" for="inlineFormInput">{{ field.help_text }}</label> -->
+                <!-- <label for="field" class="form-control">{{ field.help_text }}</label> -->
+                <!-- <input type="{{ field.field }}" class="" id="field" placeholder="{{ field.help_text }}"> -->
+                <!-- <input class="inlineFormInput"> -->
+                <span>
+                    <span class="text-muted">{{ field.help_text }}</span>{{ field }}{{ field.errors }}
+                </span>
+                <!-- </input> -->
+                {% endfor %}
+                <input type="submit" class="btn btn-primary" name="submit" value="Create Quiz" />
+
+
+            </li>
+        </ul>
+    </form>
+
+</div>
+</br>
 <div>
     {% for module in modules %}
     <div class="text-left">

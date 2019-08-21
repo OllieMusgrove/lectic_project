@@ -287,6 +287,7 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
         if item.auto_id == int (quiz_attempt_no):
             break
 
+    pb = quiz_attempt
 #calculates user performace for quiz-select
     for performance in best_user_performances:
         if performance.user == request.user:

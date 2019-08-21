@@ -131,7 +131,7 @@ class QuestionAttempt(models.Model):
     performance = models.DecimalField(decimal_places = 3, max_digits = 10, default=0.000)
 
     def save(self, *args, **kwargs):
-        if self.question.answer == self.attempt:
+        if self.question.answer.lower() == self.attempt.lower():
             self.result = True
             self.performance = self.time
             print ('Correct Answer!')

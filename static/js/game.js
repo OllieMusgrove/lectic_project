@@ -48,11 +48,24 @@ $(document).ready(function () {
         var difference = (end - start) / 1000;
         console.log("time = " + difference + " seconds");
         console.log("Answer = " + question_ans)
+        console.log("new message?");
         start = new Date();
         var alertStyle
         var titleMes
         var textMes
         var submittedAns = $('#attempt_text').val();
+        var stringSub = String(submittedAns);
+        var stringAns = String(question_ans);
+        console.log(stringSub);
+        console.log(stringAns);
+        var lowerSub = stringSub.toLowerCase();
+        var lowerAns = stringAns.toLowerCase();
+        console.log(lowerSub);
+        console.log(lowerAns);
+        // var question_ans = question_ans.toLowerCase();
+        // console.log("sanity check");
+        // console.log("Lower submitted = " + submittedAns);
+        // console.log("Lower answer = " + question_ans);
         if (forced) {
             console.log("This was forced")
             alertStyle = "warning"
@@ -61,7 +74,7 @@ $(document).ready(function () {
         }
         else {
             console.log("This was not forced")
-            if (submittedAns === question_ans) {
+            if (lowerSub === lowerAns) {
                 alertStyle = "success"
                 titleMes = "Correct!"
                 textMes = "Answer = " + question_ans

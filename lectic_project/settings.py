@@ -33,7 +33,7 @@ SECRET_KEY = 'fs5wg7#mik_%)x1$vtqrns1tnx(j!944wquro64yhmpcflzm@4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://Lectic.pythonanywhere.com']
+ALLOWED_HOSTS = ['http://lectic.pythonanywhere.com']
 
 
 # Application definition

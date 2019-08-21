@@ -1,0 +1,4 @@
+certifi==2019.6.16
+Django==1.11.17
+Pillow==6.1.0
+pytz==2019.1

@@ -130,11 +130,11 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
     else:
         quiz_attempt = QuizAttempt.objects.get(auto_id=quiz_attempt_int)
         quiz_attempt_int = quiz_attempt.auto_id
-        user_profile = UserProfile.objects.get(user=request.user)
-        user_profile.coins = user_profile.coins + quiz_attempt.coins
-        user_profile.save()
-        print ("coins added")
-        print (user_profile.coins)
+        # user_profile = UserProfile.objects.get(user=request.user)
+        # user_profile.coins = user_profile.coins + quiz_attempt.coins
+        # user_profile.save()
+        # print ("coins added")
+        # print (user_profile.coins)
     
     if quiz_attempt_int == 0000000:
         quiz_attempt_no = "0000000"
@@ -178,6 +178,17 @@ def game(request, quiz_name_slug, question_number, quiz_attempt_no):
         quiz_attempt.qes_complete = quiz_attempt.qes_complete + 1
         quiz_attempt.save()
         print(quiz_attempt.performance)
+
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile.coins = user_profile.coins + quiz_attempt.coins
+        user_profile.save()
+        print ("coins added")
+        print (user_profile.coins)
+
+    except:
+        print ("no user found")
+
 
     qn_plus = quest_num #may need exception handling...
     progress = int ((qn_plus/question_list.count())*100)
@@ -272,9 +283,10 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
 
     all_qz_attempts = QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('-performance')
     best_user_performances = [all_qz_attempts.filter(user=item['user']).last() for item in UserProfile.objects.filter(is_lecturer=False).values('user').distinct()]
-    ranked_by_user = sorted(best_user_performances, key=lambda x: x.performance, reverse=False)
-    total_quiz_user_attempts = len(best_user_performances)
     print (best_user_performances)
+    ranked_by_user = sorted(best_user_performances, key=lambda x: x.performance, reverse=False)
+    print (ranked_by_user)
+    total_quiz_user_attempts = len(best_user_performances)
     print (total_quiz_user_attempts)
 
     outOf = all_qz_attempts.count()
@@ -287,7 +299,7 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
         if item.auto_id == int (quiz_attempt_no):
             break
 
-    pb = quiz_attempt
+    # pb = quiz_attempt
 #calculates user performace for quiz-select
     for performance in best_user_performances:
         if performance.user == request.user:

@@ -307,15 +307,25 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
         if performance.user == request.user:
             pb = performance
             print ("pb found")
+            j = 0
+            for qa in ranked_by_user:
+                j += 1
+                if qa.auto_id == pb.auto_id:
+                    print ("match found")
+                    print (j)
+                    break
             break
+        else:
+            j = None
+            pb = None
 
-    j = 0
-    for qa in ranked_by_user:
-        j += 1
-        if qa.auto_id == pb.auto_id:
-            print ("match found")
-            print (j)
-            break
+    # j = 0
+    # for qa in ranked_by_user:
+    #     j += 1
+    #     if qa.auto_id == pb.auto_id:
+    #         print ("match found")
+    #         print (j)
+    #         break
 
 
     context_dict = {'tot_class':total_quiz_user_attempts,'pos_inclass': j,'pb':pb,'attempt':attempt,'quiz_attempt' : quiz_attempt, 'quiz_slug' : quiz_name_slug, 'pos' : i, 'tot' : outOf}    

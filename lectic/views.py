@@ -303,7 +303,9 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
 
     # pb = quiz_attempt
 #calculates user performace for quiz-select
-    for performance in best_user_performances:
+    j = 0
+    pb = None
+    for performance in ranked_by_user:
         if performance.user == request.user:
             pb = performance
             print ("pb found")

@@ -284,6 +284,8 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
     all_qz_attempts = QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('-performance')
     best_user_performances = [all_qz_attempts.filter(user=item['user']).last() for item in UserProfile.objects.filter(is_lecturer=False).values('user').distinct()]
     print (best_user_performances)
+    best_user_performances = filter(None,best_user_performances)
+    print (best_user_performances)
     ranked_by_user = sorted(best_user_performances, key=lambda x: x.performance, reverse=False)
     print (ranked_by_user)
     total_quiz_user_attempts = len(best_user_performances)

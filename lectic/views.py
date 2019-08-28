@@ -288,7 +288,7 @@ def quiz_end(request, quiz_name_slug, quiz_attempt_no):
     print (best_user_performances)
     ranked_by_user = sorted(best_user_performances, key=lambda x: x.performance, reverse=False)
     print (ranked_by_user)
-    total_quiz_user_attempts = len(best_user_performances)
+    total_quiz_user_attempts = len(ranked_by_user)
     print (total_quiz_user_attempts)
 
     outOf = all_qz_attempts.count()

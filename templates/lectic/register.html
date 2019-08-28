@@ -14,7 +14,7 @@ Register for Lectic!
 <div>
     {% if registered %}
     <h2> Thank you for registering!</h2>
-    <a href="{% url 'index' %}">Return to Index</a>
+    <a href="{% url 'login' %}">Sign in here!</a>
     {% else %}
     <form id="user_form" method="post" action="{% url 'register' %}" enctype="multipart/form-data">
         <div class=text-left>

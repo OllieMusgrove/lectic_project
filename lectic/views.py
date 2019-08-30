@@ -262,6 +262,7 @@ def leaderboard(request, quiz_name_slug):
             all_qz_attempts = QuizAttempt.objects.exclude(finished=False).filter(quiz=quiz_select).order_by('-performance')
             uu1 = UserProfile.objects.filter(is_lecturer=False).values('user').distinct()
             item_list = [all_qz_attempts.filter(user=item['user']).last() for item in UserProfile.objects.filter(is_lecturer=False).values('user').distinct()]
+            item_list = filter(None,item_list)
             ordered_il = sorted(item_list, key=lambda x: x.performance, reverse=False)
             print(all_qz_attempts)
             print(uu1)
